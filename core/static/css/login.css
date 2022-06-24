@@ -1,0 +1,85 @@
+@charset "utf-8";
+/* CSS Document */
+.container-fluid {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to top, orangered 40%, darkorange 90% 60%);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to top, orangered 40%, orangered 90% 60%);
+}
+
+#divsep{
+    border-radius: 25px;
+    
+}
+
+#divform {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+}
+
+#loginform {
+    width: 30%;
+    background: linear-gradient(45deg, black, orangered );
+    border-radius: 6%;    
+}
+
+#btnenviar {
+    width: 100%;
+    background-color:white!important;
+    color: black;
+    font-weight: bold;
+    border-color: white ;
+
+}
+
+#login-box .logofunny {
+    background: black;   
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: absolute;
+    top: 130px;
+    left: calc(50% - 50px);
+}
+
+#login-box h1 {
+    margin: 0;
+    padding: 0 0 20px;
+    text-align: center;
+    font-weight: bold;
+    display: block;
+}
+
+#login-box label {
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+    font-style: italic;
+    display: block;
+}
+
+#login-box input {
+    border: none;
+    border-bottom: 1px solid lavender;
+    background:lavender;
+    border-radius: 10px;
+}
+
+@media (max-device-width: 575px) {
+    #loginform {
+        width: calc(100% - 100px);
+    }
+}
+
+@media (min-device-width: 575px) and  (max-device-width: 991px){
+    #loginform {
+        width: calc(80% - 100px);
+    }
+}

@@ -1,0 +1,240 @@
+<div class="row text-center m-0 p-0">			
+					<div class="col-12 col-md-6 col-lg-4 b-inline mt-4 p-0">
+						<button type="button" class="btn btn-lg btn-outline-dark btn-light galeriaButton" style="box-shadow:1px 2px 5px 2px black"
+								data-bs-toggle="modal" data-bs-target="#miModal1" id="galeriaButton1"
+								data-toggle="popover" data-bs-trigger="hover" title="Collar para Perros" data-bs-placement="bottom">
+								<img src="{% static 'img/imgCollar.jpg' %}" id="galeriaImg1" alt="Imagen Accesorio" class="img-thumbnail img-fluid galeriaImg">
+						</button>
+					</div>
+					
+					<div class="col-12 col-md-6 col-lg-4 d-inline mt-4 p-0">
+						<button type="button" class="btn btn-lg btn-outline-dark btn-light galeriaButton" style="box-shadow:1px 2px 5px 2px black"
+								data-bs-toggle="modal" data-bs-target="#miModal2" id="galeriaButton2"
+								data-toggle="popover" data-bs-trigger="hover" title="Plato para Mascotas" data-bs-placement="bottom">
+								<img src="{% static 'img/imgComedero1.jpg' %}" alt="Imagen Accesorio" class="img-thumbnail img-fluid galeriaImg">
+						</button>
+					</div>
+					
+					<div class="col-12 col-md-6 col-lg-4 d-inline mt-4 p-0">
+						<button type="button" class="btn btn-lg btn-outline-dark btn-light galeriaButton" style="box-shadow:1px 2px 5px 2px black"
+								data-bs-toggle="modal" data-bs-target="#miModal3" id="galeriaButton3"
+								data-toggle="popover" data-bs-trigger="hover" title="Correas para Mascotas" data-bs-placement="bottom">
+								<img src="{% static 'img/imgCorrea1.jpg' %}" alt="Imagen Accesorio" class="img-thumbnail img-fluid galeriaImg">
+						</button>
+					</div>
+					
+					<div class="col-12 col-md-6 col-lg-4 d-inline mt-4 p-0">
+						<button type="button" class="btn btn-lg btn-outline-dark btn-light galeriaButton" style="box-shadow:1px 2px 5px 2px black"
+								data-bs-toggle="modal" data-bs-target="#miModal4" id="galeriaButton4"
+								data-toggle="popover" data-bs-trigger="hover" title="Arnes para Perros" data-bs-placement="bottom">
+								<img src="{% static 'img/imgArnes.jpg' %}" alt="Imagen Accesorio" class="img-thumbnail img-fluid galeriaImg">
+						</button>
+					</div>
+					
+					<div class="col-12 col-md-6 col-lg-4 d-inline mt-4 p-0">
+						<button type="button" class="btn btn-lg btn-outline-dark btn-light galeriaButton" style="box-shadow:1px 2px 5px 2px black"
+								data-bs-toggle="modal" data-bs-target="#miModal5" id="galeriaButton5"
+								data-toggle="popover" data-bs-trigger="hover" title="Shampoo para Gato PET CARE" data-bs-placement="bottom">
+								<img src="{% static 'img/imgShampooGato.jpg' %}" alt="Imagen Accesorio" class="img-thumbnail img-fluid galeriaImg">
+						</button>
+					</div>
+					
+					<div class="col-12 col-md-6 col-lg-4 d-inline mt-4 p-0">
+						<button type="button" class="btn btn-lg btn-outline-dark btn-light galeriaButton" style="box-shadow:1px 2px 5px 2px black"
+								data-bs-toggle="modal" data-bs-target="#miModal6" id="galeriaButton6"
+								data-toggle="popover" data-bs-trigger="hover" title="Rascador para Gatos" data-bs-placement="bottom">
+								<img src="{% static 'img/imgRascador.png' %}" alt="Imagen Accesorio" class="img-thumbnail img-fluid galeriaImg">
+						</button>
+					</div>
+				</div>
+
+
+
+
+
+                <!--Modal PopOver UI-->
+			<div class="modal fade" id="miModal1" tabindex="-1" aria-labelledby="miModalLabel1" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<!--Modal cabecera-->
+						<div class="modal-header">
+							<h5 class="modal-tittle" id="miModalLabel1">Informaci&oacute;n del producto</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<!--Modal cuerpo-->
+						<div class="modal-body">
+							<small class="d-block">Accesorios &raquo; Perros</small>
+							<br>
+							<p class="mb-0"><span class="fw-bold">Nombre: </span> Collares para Perros</p>
+							<p class="mb-0"><span class="fw-bold">Precio:</span> $4.990</p>
+							<p><span class="fw-bold">Descripci&oacute;n: </span><br>Collar para que tu peludito luzca como nunca! Con una amplia variedad de estilos.</p>
+						</div>
+						<!--Modal cabecera pie-->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Salir</button> 
+							{% if is_loged %}
+							{% csrf_token %}
+							<a href="#" class="btn btn-primary" data-bs-dismiss="modal">Añadir al carro</a>
+							{% else %}
+							<abbr title="Debes ingresar a tu cuenta para esta accion"><button type="button" class="btn btn-primary" disabled>Añadir al carrito</button></abbr>
+							{% endif %}
+							<!--<input type="number" name="cant1" id="cant1" min="1" max="99" class="cantinput">-->
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" id="miModal2" tabindex="-1" aria-labelledby="miModalLabel2" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<!--Modal cabecera-->
+						<div class="modal-header">
+							<h5 class="modal-tittle" id="miModalLabel2">Informaci&oacute;n del producto</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<!--Modal cuerpo-->
+						<div class="modal-body">
+							<small class="d-block">Accesorios &raquo; Todos</small>
+							<br>
+							<p class="mb-0"><span class="fw-bold">Nombre: </span> Platos para Mascotas</p>
+							<p class="mb-0"><span class="fw-bold">Precio:</span> $3.990</p>
+							<p><span class="fw-bold">Descripci&oacute;n: </span><br>Platos de doble seccion para tus mascotas, con variedad de colores.</p>
+						</div>
+						<!--Modal cabecera pie-->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Salir</button> {% csrf_token %}
+							{% if is_loged %}
+							{% csrf_token %}
+							<a href="#" class="btn btn-primary" data-bs-dismiss="modal">Añadir al carro</a>
+							{% else %}
+							<abbr title="Debes ingresar a tu cuenta para esta accion"><button type="button" class="btn btn-primary" disabled>Añadir al carrito</button></abbr>
+							{% endif %}
+							<!--<input type="number" name="cant2" id="cant2" min="1" max="99" class="cantinput">-->
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal fade" id="miModal3" tabindex="-1" aria-labelledby="miModalLabel3" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<!--Modal cabecera-->
+						<div class="modal-header">
+							<h5 class="modal-tittle" id="miModalLabel3">Informaci&oacute;n del producto</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<!--Modal cuerpo-->
+						<div class="modal-body">
+							<small class="d-block">Acessorios &raquo; Todos</small>
+							<br>
+							<p class="mb-0"><span class="fw-bold">Nombre: </span> Correas para Masotas</p>
+							<p class="mb-0"><span class="fw-bold">Precio:</span> $4.990</p>
+							<p><span class="fw-bold">Descripci&oacute;n: </span><br>Correas de distintos tamaños para collares y arn&eacute;s. Comb&iacute;nalas de diferentes maneras.</p>
+						</div>
+						<!--Modal cabecera pie-->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Salir</button> {% csrf_token %}
+							{% if is_loged %}
+							{% csrf_token %}
+							<a href="#" class="btn btn-primary" data-bs-dismiss="modal">Añadir al carro</a>
+							{% else %}
+							<abbr title="Debes ingresar a tu cuenta para esta accion"><button type="button" class="btn btn-primary" disabled>Añadir al carrito</button></abbr>
+							{% endif %}
+							<!--<input type="number" name="cant3" id="cant3" min="1" max="99" class="cantinput">-->
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal fade" id="miModal4" tabindex="-1" aria-labelledby="miModalLabel4" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<!--Modal cabecera-->
+						<div class="modal-header">
+							<h5 class="modal-tittle" id="miModalLabel4">Informaci&oacute;n del producto</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<!--Modal cuerpo-->
+						<div class="modal-body">
+							<small class="d-block">Acessorios &raquo; Perros</small>
+							<br>
+							<p class="mb-0"><span class="fw-bold">Nombre: </span> Arn&eacute;s para Perros</p>
+							<p class="mb-0"><span class="fw-bold">Precio:</span> $5.990</p>
+							<p><span class="fw-bold">Descripci&oacute;n: </span><br>Arn&eacute;s que le brinda comodidad y estilo a tu mascota. Disponibles en diferentes colores.</p>
+						</div>
+						<!--Modal cabecera pie-->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Salir</button> {% csrf_token %}
+							{% if is_loged %}
+							{% csrf_token %}
+							<a href="#" class="btn btn-primary" data-bs-dismiss="modal">Añadir al carro</a>
+							{% else %}
+							<abbr title="Debes ingresar a tu cuenta para esta accion"><button type="button" class="btn btn-primary" disabled>Añadir al carrito</button></abbr>
+							{% endif %}
+							<!--<input type="number" name="cant4" id="cant4" min="1" max="99" class="cantinput">-->
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal fade" id="miModal5" tabindex="-1" aria-labelledby="miModalLabel5" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<!--Modal cabecera-->
+						<div class="modal-header">
+							<h5 class="modal-tittle" id="miModalLabel5">Informaci&oacute;n del producto</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<!--Modal cuerpo-->
+						<div class="modal-body">
+							<small class="d-block">Acessorios &raquo; Gatos</small>
+							<br>
+							<p class="mb-0"><span class="fw-bold">Nombre: </span> Shampoo para Gato PET CARE Frasco 400ml</p>
+							<p class="mb-0"><span class="fw-bold">Precio:</span> $7.990</p>
+							<p><span class="fw-bold">Descripci&oacute;n: </span><br>Shampoo especial <i>Pet Care</i> que le brindar&aacute; protecci&oacute;n e higiene a tu gato.</p>
+						</div>
+						<!--Modal cabecera pie-->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Salir</button> {% csrf_token %}
+							{% if is_loged %}
+							{% csrf_token %}
+							<a href="#" class="btn btn-primary" data-bs-dismiss="modal">Añadir al carro</a>
+							{% else %}
+							<abbr title="Debes ingresar a tu cuenta para esta accion"><button type="button" class="btn btn-primary" disabled>Añadir al carrito</button></abbr>
+							{% endif %}
+							<!--<input type="number" name="cant5" id="cant5" min="1" max="99" class="cantinput">-->
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal fade" id="miModal6" tabindex="-1" aria-labelledby="miModalLabel6" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<!--Modal cabecera-->
+						<div class="modal-header">
+							<h5 class="modal-tittle" id="miModalLabel6">Informaci&oacute;n del producto</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<!--Modal cuerpo-->
+						<div class="modal-body">
+							<small class="d-block">Acessorios &raquo; Gatos</small>
+							<br>
+							<p class="mb-0"><span class="fw-bold">Nombre: </span> Rascador para Gatos</p>
+							<p class="mb-0"><span class="fw-bold">Precio:</span> $45.990</p>
+							<p><span class="fw-bold">Descripci&oacute;n: </span><br>Un amplio y comodo rascador para que tu gato se sienta a gusto!</p>
+							<p class="mb-0"><span class="fw-bold">Dimensi&oacute;nes:</span> Ancho: 40cm , Alto: 120cm , Largo: 40cm</p>
+						</div>
+						<!--Modal cabecera pie-->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Salir</button> {% csrf_token %}
+							{% if is_loged %}
+							{% csrf_token %}
+							<a href="#" class="btn btn-primary" data-bs-dismiss="modal">Añadir al carro</a>
+							{% else %}
+							<abbr title="Debes ingresar a tu cuenta para esta accion"><button type="button" class="btn btn-primary" disabled>Añadir al carrito</button></abbr>
+							{% endif %}
+							<!--<input type="number" name="cant6" id="cant6" min="1" max="99" class="cantinput">-->
+						</div>
+					</div>
+				</div>
+			</div>
