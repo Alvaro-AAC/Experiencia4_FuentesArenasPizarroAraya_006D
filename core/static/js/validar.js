@@ -82,7 +82,7 @@ function init() {
 					let failmodal = $('#failModal');
 					loadingmodal.modal('hide');
 					failmodal.modal('toggle');
-					$('#errorsignup').html('Por favor, actualice la página');
+					$('#errorsignup').html(data.responseJSON.error);
 				}
 			})
 		}

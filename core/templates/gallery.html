@@ -40,6 +40,8 @@
 								</div>
 								{% else %}
 								<div class="card-footer text-center">
+									<small>Stock disponible: {{producto.stock}}</small>
+									<br>
 									<a href="{% url 'carro:agregar' producto.id_producto %}" class="btn btn-success">Agregar al carro</a>
 								</div>
 								{% endif %}

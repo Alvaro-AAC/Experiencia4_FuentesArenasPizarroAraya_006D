@@ -2,6 +2,7 @@ from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.forms.models import model_to_dict
 from django.contrib.auth.hashers import check_password, identify_hasher
+from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
 from carrito.carro import Carro
@@ -156,6 +157,7 @@ def registrar_usuario(request):
     ctx['user'] = user
     if request.method == 'POST':
         try:
+            print(request.POST)
             cleaned_data = {}
             data = dict(request.POST)
             cleaned_data['rut'] = int(data['id'][0][:-2])
@@ -174,6 +176,7 @@ def registrar_usuario(request):
             cleaned_data['ciudad'] = Ciudad.objects.get(id_ciudad = int(data['ciudad'][0]))
             cleaned_data['direccion_calle'] = data['direccion'][0]
             cleaned_data['direccion_numero'] = int(data['numeracion'][0])
+            cleaned_data['suscripcion'] = True if 'donacion' in request.POST else False
             user = Usuario(**cleaned_data)
             if not (Usuario.objects.filter(email = user.email).exists() or Usuario.objects.filter(rut = user.rut).exists()):
                 user.save()
@@ -227,7 +230,7 @@ def perfil_mod(request, id):
     except Usuario.DoesNotExist:
         return HttpResponseRedirect('/login/')
     try:
-        s = request.session['usuario']
+        s = request.session['usuario'].copy()
     except KeyError:
         return HttpResponseRedirect('/login/')
     s['ciudad'] = Ciudad.objects.get(id_ciudad = s['ciudad'])
@@ -263,13 +266,14 @@ def perfil(request, id):
     ctx['user'] = user
     try:
         u_rut = Usuario.objects.get(rut = id)
-        s = request.session['usuario']
+        s = request.session['usuario'].copy()
     except (Usuario.DoesNotExist, KeyError):
         return HttpResponseRedirect('/login/')
     s['ciudad'] = Ciudad.objects.get(id_ciudad = s['ciudad'])
     if u_rut == Usuario(**s):
         ctx['datos'] = Perfil_form(instance = u_rut)
         ctx['user'] = u_rut
+        ctx['boletas'] = list(set([elem.id_boleta for elem in detalle_boleta.objects.filter(id_usuario = u_rut).all()]))
         if request.method == 'GET':
             return render(request,'perfil.html',ctx)
         elif request.method == 'POST':
@@ -306,8 +310,12 @@ def generar_boleta(request):
     ctx['user'] = user
     if ctx['is_loged']:
         precio_total = sum([int(j['precio']) for i, j in request.session['carro'].items()])
+        descount = 5 if request.session['usuario']['suscripcion'] else 0
+        descuento = int(precio_total*(descount/100))
         descount = request.session['descount'] if 'descount' in request.session else 0
-        precio_total = precio_total - (precio_total*(descount/100))
+        descuento += int(precio_total*(descount/100))
+        request.session['descuento'] = descuento
+        precio_total = precio_total - descuento
         boleta = Boleta(total = precio_total)
         boleta.save()
         productos = []
@@ -322,8 +330,6 @@ def generar_boleta(request):
             productos.append(model_to_dict(detalle))
         carro = Carro(request)
         carro.limpiar_carro()
-        ctx['boleta'] = boleta
-        ctx['productos'] = productos
         request.session['boleta'] = boleta.id_boleta
         return HttpResponseRedirect('/boleta/')
     else:
@@ -385,14 +391,51 @@ def seguimiento(request):
 
 def get_boleta(request, id):
     boleta = Boleta.objects.get(id_boleta = id)
-    return JsonResponse({'estado': boleta.get_estado_display()})
+    compra = boleta.fecha_compra.strftime('%d/%m/%Y %H:%M')
+    despacho = boleta.fecha_despacho.strftime('%d/%m/%Y %H:%M') if boleta.fecha_despacho else 'Aún no despachado'
+    entrega = boleta.fecha_entrega.strftime('%d/%m/%Y %H:%M') if boleta.fecha_entrega else 'Aún no entregado'
+    return JsonResponse({'estado': boleta.get_estado_display(), 
+        'fecha': compra,
+        'fecha_despacho': despacho,
+        'fecha_entrega': entrega})
 
 def get_descuento(request, str):
     if descuento.objects.filter(codigo = str).exists():
+        sus = 5 if request.session['usuario']['suscripcion'] else 0
         descount = descuento.objects.get(codigo = str)
-        request.session['descount'] = descount.porcentaje
+        request.session['descount'] = descount.porcentaje + sus
         porce = descount.porcentaje
     else:
         porce = 0
         request.session['descount'] = 0
     return JsonResponse({'porcentaje': porce})
+
+def get_compra(request, id):
+    boleta = Boleta.objects.get(id_boleta = id)
+    boleta_dict = model_to_dict(boleta)
+    compra = boleta.fecha_compra.strftime('%d/%m/%Y %H:%M')
+    despacho = boleta.fecha_despacho.strftime('%d/%m/%Y %H:%M') if boleta.fecha_despacho else 'Aún no despachado'
+    entrega = boleta.fecha_entrega.strftime('%d/%m/%Y %H:%M') if boleta.fecha_entrega else 'Aún no entregado'
+    boleta_dict['estado'] = str(boleta.get_estado_display())
+    boleta_dict['fecha_compra'] = compra
+    boleta_dict['fecha_despacho'] = despacho
+    boleta_dict['fecha_entrega'] = entrega
+    detalles = detalle_boleta.objects.filter(id_boleta = boleta).all()
+    detalles = list(detalles)
+    detallec = [model_to_dict(elem) for elem in list(detalles)]
+    for i, elem in enumerate(detallec):
+        elem['id_producto'] = str(detalles[i-1].id_producto)
+        elem['precioU'] = detalles[i-1].id_producto.precio
+    return JsonResponse({'boleta': boleta_dict, 'detalles': detallec})
+
+@login_required
+def post_next_status(request, id):
+    boleta = Boleta.objects.get(id_boleta = id)
+    choices = [elem[0] for elem  in boleta.ESTADO_CHOICES]
+    try:
+        next = choices[choices.index(boleta.estado)+1]
+        boleta.estado = next
+        boleta.save()
+    except IndexError:
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

@@ -1,6 +1,8 @@
-from tabnanny import verbose
+import datetime
 from django.db import models
+from django.db.models.signals import pre_save, post_save
 from django.contrib.auth.hashers import make_password, identify_hasher
+import requests
 
 # Create your models here.
 
@@ -25,6 +27,11 @@ class Ciudad(models.Model):
     class Meta:
         verbose_name_plural = 'Ciudades'
 
+    def __unicode__(self):
+        return self.id_ciudad
+
+        
+
 class Usuario(models.Model):
     rut = models.IntegerField(primary_key=True, null=False, blank=False)
     dv = models.CharField(max_length=1, null=False, blank=False)
@@ -37,6 +44,7 @@ class Usuario(models.Model):
     ciudad = models.ForeignKey('Ciudad', on_delete=models.CASCADE, null=False, blank=False)
     direccion_calle = models.CharField(max_length=100, null=False, blank=False)
     direccion_numero = models.IntegerField(null=False, blank=False)
+    suscripcion = models.BooleanField(null=False, blank=False, default=False)
 
     class Meta:
         constraints = [
@@ -60,6 +68,7 @@ class Usuario(models.Model):
     
     def __exit__(self, exc_type, exc_val, exc_tb):
         del self
+
 
 class Tipo_mascota(models.Model):
     id_tipo_mascota = models.IntegerField(primary_key=True, null=False, blank=False)
@@ -121,7 +130,17 @@ class Boleta(models.Model):
 
     id_boleta = models.BigAutoField(primary_key=True)
     total = models.BigIntegerField()
+    fecha_compra = models.DateTimeField(blank=False, null=False, default = datetime.datetime.now)
+    fecha_despacho = models.DateTimeField(blank=True, null=True)
+    fecha_entrega = models.DateTimeField(blank=True, null=True)
     estado = models.CharField(choices=ESTADO_CHOICES, default='procesando', max_length=200)
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(check = models.Q(total__gte=0), name='check_boleta_total'),
+            models.CheckConstraint(check = models.Q(fecha_despacho__gte=models.F('fecha_compra')), name='check_boleta_fecha_despacho'),
+            models.CheckConstraint(check = models.Q(fecha_entrega__gte=models.F('fecha_despacho')), name='check_boleta_fecha_entrega'),
+        ]
 
     def __str__(self):
         return str(self.id_boleta)
@@ -143,3 +162,21 @@ class descuento(models.Model):
 
     def __str__(self):
         return str(self.codigo)
+
+def pre_save_entregar_pedido(sender, instance, **kwargs):
+    if instance.estado == 'enviando':
+        instance.fecha_despacho = datetime.datetime.now()
+    if instance.estado == 'recibido' and instance.fecha_entrega is None:
+        print('sss')
+        instance.fecha_entrega = datetime.datetime.now()
+    elif instance.estado != 'recibido':
+        instance.fecha_entrega = None
+
+def post_save_fundacion(sender, instance, **kwargs):
+    post_data = {'rut': instance.rut, 'dv': instance.dv, 'suscripcion': instance.suscripcion}
+    response = requests.post('http://127.0.0.1:8000/fundacion/v1/insertar-dato/', data=post_data)
+    if '<Response [415]>' in str(response):
+        response = requests.put(f'http://127.0.0.1:8000/fundacion/v1/personas/{instance.rut}/', data=post_data)
+
+post_save.connect(post_save_fundacion, sender = Usuario)
+pre_save.connect(pre_save_entregar_pedido, sender = Boleta)

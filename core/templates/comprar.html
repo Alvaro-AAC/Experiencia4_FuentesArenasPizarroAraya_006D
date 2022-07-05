@@ -41,7 +41,7 @@
 						</article>
 						{% endfor %}
 					</div>
-					<h4>Descuento: $-{% widthratio boleta.total 100 descount %}</h4>
+					<h4>Descuento: $-{{request.session.descuento}}</h4>
 					<h3>Total: ${{boleta.total}}</h3>
 				</div>
             </div>

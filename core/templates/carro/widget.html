@@ -36,7 +36,18 @@
     <tfoot>
         <tr>
             <td>
-                Total: $<span id="total">{{total_carro}}</span>
+                Total: $<span id="totalprevio">{{total}}</span>
+            </td>
+            <td>
+                Descuento: $<span id="descuentoresta">{{sustraer}}</span>
+            </td>
+            <td>
+                A pagar: $<span id="total">{{total_carro}}</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                
             </td>
             <td>
                 <button class="btn btn-secondary btn-sm" onclick="limpiar_carrito()">Limpiar</button>
@@ -52,5 +63,12 @@
         <tr>
             <td colspan="3" id="descount"></td>
         </tr>
+        {% if request.session.usuario.suscripcion %}
+        <td colspan="3">
+            <div class="alert text-center p-0 m-0">
+                TIENE UN DESCUENTO DEL 5% POR ESTAR SUSCRITO
+            </div>
+        </td>
+        {% endif %}
     </tfoot>
 </table>

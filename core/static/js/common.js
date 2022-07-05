@@ -58,10 +58,21 @@ function apply_discount() {
         type: "GET",
         success: function(data) {
             descuentototal = data.porcentaje;
-            $('#descount').html('Se aplicara un descuento del ' + data.porcentaje + '% en el total de la compra.');
-            $('#total').html(parseInt($('#total')[0].innerHTML) - parseInt($('#total')[0].innerHTML)*(parseInt(data.porcentaje)/100))
-            $('#descountbtn').addClass('disabled');
-            $('.cantbtn').addClass('disabled');
+            if (descuentototal == 0) {
+                $('#descount').html('<center><p class="bg-danger rounded-pill p-3">No se ha encontrado descuento.</p></center>');
+            }
+            else {
+                $('#descount').html('Se aplicara un descuento del ' + data.porcentaje + '% en el total de la compra.');
+                var total = parseInt($('#totalprevio')[0].innerHTML);
+                var apagar = parseInt($('#total')[0].innerHTML);
+                var descuento = parseInt($('#descuentoresta')[0].innerHTML);
+                var descuentoaplicado = parseInt(data.porcentaje)/100;
+                $('#descuentoresta').html(parseInt(descuento + total*descuentoaplicado));
+                $('#total').html(total - parseInt($('#descuentoresta').html()));
+
+                $('#descountbtn').addClass('disabled');
+                $('.cantbtn').addClass('disabled');
+            }
         },
         error: function() {
             $('#descount').html('<center><p class="bg-danger rounded-pill p-3">No se ha encontrado descuento.</p></center>');

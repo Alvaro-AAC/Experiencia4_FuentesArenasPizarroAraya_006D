@@ -20,6 +20,8 @@ urlpatterns = [
     path('boleta/', boletin),
     path('get/boleta/<id>/', get_boleta),
     path('get/descuento/<str>/', get_descuento),
+    path('get/compras/<id>/', get_compra),
+    path('post/next_status/<id>/', post_next_status),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

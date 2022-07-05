@@ -30,23 +30,32 @@
 			<br><br><br><br>
             <div class="container-fluid mt-1 mt-lg-2 text-light d-flex justify-content-center"> 
 				<div class="container-sm justify-content-center bg-dark rounded-pill p-5 text-center" id="changewidth">
-					<h1 class="underline"><u>Seguimiento</u></h1>
-					<label for="Boleta">Seleccione un numero de orden:</label>
 					<center>
 					{% if not is_loged %}
 					<div class="d-flex align-self-center text-center justify-content-center">
 						<p class="d-flex align-self-center text-center mt-3 pt-3 pb-3 ps-3 pe-3 rounded-pill" style="background-color: red; color: white;">Debes iniciar sesión para poder ver el seguimiento.</p>
 					</div>
 					{% else %}
-					<select name="Boleta" id="Boleta" class="form-control form-select w-25 align-self-center m-4">
-						<option disabled selected value> Orden </option>
-						{% for key, value in boletas.items %}
-						
-						<option value="{{key}}">{{key}}</option>
-						
-						{% endfor %}
-					</select>
-					<h4>Estado del pedido: <span id="estado_pedido"></span></h4>
+						{% if boletas %}
+						<h1 class="underline"><u>Seguimiento</u></h1>
+						<label for="Boleta">Seleccione un numero de orden:</label>
+						<select name="Boleta" id="Boleta" class="form-control form-select w-25 align-self-center m-4">
+							<option disabled selected value> Orden </option>
+							{% for key, value in boletas.items %}
+							<option value="{{key}}">{{key}}</option>
+							{% endfor %}
+						</select>
+						<h4>Estado del pedido: <span id="estado_pedido"></span></h4>
+						<h4>Fecha compra: <span id="fecha_pedido"></span></h4>
+						<h4>Fecha despacho: <span id="fecha_despacho"></span></h4>
+						<h4>Fecha entrega: <span id="fecha_entrega"></span></h4>
+						{% else %}
+						<h4 class="alert-danger p-5 rounded-pill">
+							Usted no posee ninguna compra hasta el momento.
+							<br>
+							Para realizar una compra visite <a href="/galeria/">nuestro cat&aacute;logo.</a>
+						</h4>
+						{% endif %}
 					{% endif %}
 					</center>
 				</div>
@@ -83,7 +92,10 @@
 				url: '/get/boleta/' + $('#Boleta').val(),
 				type: 'GET',
 				success: function(data) {
-					$('#estado_pedido').html(data.estado)
+					$('#estado_pedido').html(data.estado);
+					$('#fecha_pedido').html(data.fecha);
+					$('#fecha_despacho').html(data.fecha_despacho);
+					$('#fecha_entrega').html(data.fecha_entrega);
 				},
 				error: function() {
 
